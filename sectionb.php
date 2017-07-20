@@ -10,7 +10,7 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 function drawChart(){
 	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'Category');
+	data.addColumn('string', Category);
 	data.addColumn('number', Cnt);
 	data.addRows([
 	
