@@ -11,7 +11,7 @@ User Type: <select name = "usertype" >
 </select><br>
 Email: <input type="text" name="email"><br>
 Password: <input type="text" name="pass"><br>
-<input type="submit"></input>
+<input type="submit" name="submit"></input>
 </form>
 </body>
 </html>
@@ -24,34 +24,35 @@ $db = 'faloduno_pbl';
 $un = 'faloduno_pbl';
 $pw = 'mypassword';
 
-$conn = new mysql($hn, $un, $pw, $db);
-if($conn->connect_error){
-   die($conn->connect_error);
+$conn = mysql_connect($hn, $un, $pw, $db);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
 if (isset($_POST['submit'])){
-	$fname = $_POST['fname'];
-        $fname = $conn->real_escape_string($fname); 
-	$lname = $_POST['lname'];        
-        $lname = $conn->real_escape_string($lname); 
-	$usertype = $_POST['usertype'];  
-        $usertype = $conn->real_escape_string($usertype); 
-	$email = $_POST['email'];
-        $email = $conn->real_escape_string($email); 
-	$pass = $_POST['pass'];
-        $pass = $conn->real_escape_string($pass); 
+	$fname = $_POST["fname"];
+        $fname = mysql_real_escape_string($fname); 
+	$lname = $_POST["lname"];        
+        $lname = mysql_real_escape_string($lname); 
+	$usertype = $_POST["usertype"];  
+        $usertype = mysql_real_escape_string($usertype); 
+	$email = $_POST["email"];
+        $email = mysql_real_escape_string($email); 
+	$pass = $_POST["pass"];
+        $pass = mysql_real_escape_string($pass); 
 
-$query = "INSERT INTO user_profiles(fname, lname, usercode, email, password) VALUES('$fname', '$lname', '$usertype', '$email', '$pass')";
-$result = $conn->query($query);
+$sql = "INSERT INTO user_profiles (fname, lname, usercode, email, password) VALUES('$fname', '$lname', '$usertype', '$email', '$pass')";
+$result = mysqli_query($conn, $sql);
 
-if($result){
-	echo("<br>Insert record successfully");
+if(!$result){
+	echo "Insert record successfully";
 } else {
-	echo("<br>Failed! Error!");
+	echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
 }	
 
-$result->close();
-$conn->close();
+mysqli_close($conn);
 ?>
+
 
